@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta content='True' name='HandheldFriendly' >
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' >
+    <title>Registro</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" type="text/css" href="/assets/css/bootstrap.min.css">
+    <!-- Main Style -->
+    <link rel="stylesheet" type="text/css" href="/assets/css/main.css">
+    <!-- virtual keyboard -->
+    <!-- jQuery Load -->
+    <script src="/assets/js/jquery-3.1.1.min.js"></script>
+    <!-- Responsive Style -->
+    <link rel="stylesheet" type="text/css" href="/assets/css/responsive.css">
+
+    <!--Fonts-->
+    <link rel="stylesheet" media="screen" href="/assets/fonts/font-awesome/font-awesome.min.css">
+
+    <!-- Extras -->
+    <link rel="stylesheet" type="text/css" href="/assets/extras/animate.css">
+
+    <link rel="shortcut icon" href="/assets/img/logo.png">
+
+    <style type="text/css">
+        #header .banner {
+            height: 100%;
+        }
+        body {
+            background-color: black;
+        }
+    </style>
+</head>
+<body>
+<section id="header">
+    <div class="container">
+        <div class='banner text-center'>
+            <form id="pjumpForm" class="wow bounceInDown animated">
+                <div class="col-xs-10 col-xs-offset-1 col-md-8 col-md-offset-2">
+                    <h1 class="wow bounceInDown animated">Prechequeo</h1>
+                    <h2 class="wow bounceInDown animated">Registrate antes que todos y sáltate un paso!</h2>
+                    <h4 class="wow bounceInDown animated">Registre a todos los que saltarán y NO están inscritos.</h4>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                        <div class="input-inline">
+                            <input type="text" name="name" class="form-control" placeholder="Nombre" required data-validation-required-message="Escriba algún nombre.">
+                            <input type="text" name="last_name" class="form-control" placeholder="Apellido" required data-validation-required-message="Escriba algún apellido.">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-gift"></i></span>
+                        <input type="date" name="fnac" class="form-control" placeholder="Cumpleaños" required data-validation-required-message="Entre una fecha de nacimiento.">
+                    </div>
+                    <div id="success"></div>
+                    <button type="submit" class="btn btn-info btn-lg" name="submit" value="1">Enviar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+<!-- Bootstrap JS -->
+<script src="/assets/js/bootstrap.min.js"></script>
+<!-- WOW JS plugin for animation -->
+<script src="/assets/js/wow.js"></script>
+<!-- Date Picker -->
+<script type="text/javascript" src="/assets/js/transition.js"></script>
+<script type="text/javascript" src="/assets/js/collapse.js"></script>
+<script type="text/javascript">
+    $("#pjumpForm").on('submit',function (e) {
+        e.preventDefault();
+        var data = {};
+       $("#pjumpForm input").each(function (idx) {
+           data[$(this).attr('name')] = $(this).val();
+       });
+       $.ajax({
+           type: 'post',
+           data: data,
+           url: '/pjump/insert',
+           success: function(data){
+               if(!data.err){
+                   $('#success').html("<div class='alert alert-success'>");
+                   $('#success > .alert-success')
+                       .append("<strong>Bien!</strong> el registro fue exitoso.");
+                   $('#success > .alert-success')
+                       .append('</div>');
+                   $("#success").fadeTo(4000, 500).slideUp(500, function(){
+                       $("#success").slideUp(500);
+                   });
+               } else {
+                   alert("Ups, no se pudo completar el registro")
+               }
+
+           }
+       })
+    });
+</script>
+</body>
+</html>

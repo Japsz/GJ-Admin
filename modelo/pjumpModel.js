@@ -22,7 +22,7 @@ evento.insert = function(obj,callback){
 //Conseguir los prejumpers
 evento.get = function(callback){
     if(connection){
-        connection.query("SELECT * FROM pjumper",function(err,pjumpRes){
+        connection.query("SELECT *,DATE_FORMAT(fnac,'%Y-%m-%d') AS fnac_modal FROM pjumper",function(err,pjumpRes){
             if(err){
                 console.log("Error MySql: %s",err);
                 callback(err,[]);

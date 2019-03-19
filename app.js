@@ -1,14 +1,15 @@
 var express = require('express');
+var cors = require('cors');
 var path = require('path');
 var logger = require('morgan');
 
 var cookieParser = require('cookie-parser');
 var cookieSession = require('cookie-session');
 var bodyParser = require('body-parser');
-var http = require('http');
 
 var app = express();
 
+app.use(cors());
 // view engine setup
 app.use(logger('dev'));
 app.set('views', path.join(__dirname, 'views'));

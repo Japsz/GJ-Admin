@@ -1,0 +1,31 @@
+<%
+if(data.length){
+    var nac, sec_left, years;
+    var ahora = new Date().getTime();
+for(var i = 0;i < data.length;i++) {
+    nac = new Date(data[i].fnac).getTime();
+    sec_left = (ahora - nac) / 1000;
+    years = parseInt(sec_left / 31536000);
+%>
+<tr>
+    <td><%= data[i].name%></td>
+    <td><%= data[i].last_name%></td>
+    <td><%= years%></td>
+    <td><a class="btn btn-info mpjump_red" data-toggle="modal" data-target="#mpjump_red"
+           data-id="<%=data[i].id%>" data-nom="<%=data[i].name%>"
+           data-ape="<%=data[i].last_name%>" data-fnac="<%= new Date(data[i].fnac).toLocaleDateString()%>"
+        >Modificar</a></td>
+    <td>
+        <input  onclick="enable2()" name ='ids' type='checkbox' value=<%= data[i].id%>>
+    </td>
+</tr>
+<%
+}
+} else {
+%>
+<tr>
+    <td>No hay coincidencias.</td>
+</tr>
+<%
+}
+%>

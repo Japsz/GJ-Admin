@@ -17,6 +17,7 @@ router.post('/insert', function(req, res) {
 });
 /*  Insertar un prejumper. */
 router.get('/get', function(req, res) {
+    res.set('Access-Control-Allow-Headers','*');
     pjumpModel.get(function(err,response){
         if(err){
             res.send({err:true,errMsg:err});

@@ -32,5 +32,18 @@ evento.get = function(callback){
         });
     } else callback(true,"No hay conexión a la BD");
 };
+//Modificar un prejumper
+evento.update = function(id,obj,callback){
+    if(connection){
+        connection.query("UPDATE pjumper SET ? WHERE id = ?",[obj,id],function(err,pjumpRes){
+            if(err){
+                console.log("Error MySql: %s",err);
+                callback(err,[]);
+            } else {
+                callback(null,pjumpRes);
+            }
+        });
+    } else callback(true,"No hay conexión a la BD");
+};
 
 module.exports = evento;

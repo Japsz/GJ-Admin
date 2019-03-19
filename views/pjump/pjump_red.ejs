@@ -16,7 +16,7 @@ for(var i = 0;i < data.length;i++) {
            data-ape="<%=data[i].last_name%>" data-fnac="<%= data[i].fnac_modal%>"
         >Modificar</a></td>
     <td>
-        <input  onclick="enable2()" name ='ids' type='checkbox' value=<%= data[i].id%>>
+        <input  onclick="enable2()" data-name="<%=data[i].name%>" data-last_name="<%=data[i].last_name%>" data-fnac="<%= data[i].fnac%>" name ='ids' type='checkbox' value=<%= data[i].id%>>
     </td>
 </tr>
 <%

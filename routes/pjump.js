@@ -43,7 +43,7 @@ router.get('/get', function(req, res) {
 });
 /*  Conseguir lo prejumpers. */
 router.post('/delete', function(req, res) {
-    pjumpModel.remove(req.body.delList,function(err,response){
+    pjumpModel.remove(req.body['delList[]'],function(err,response){
         if(err){
             res.send({err:true,errMsg:err});
         } else {

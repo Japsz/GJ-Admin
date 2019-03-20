@@ -45,5 +45,21 @@ evento.update = function(id,obj,callback){
         });
     } else callback(true,"No hay conexión a la BD");
 };
+//Eliminar un prejumper
+evento.remove = function(deleteList,callback){
+    if(connection){
+        if(deleteList.length){
+            connection.query("DELETE FROM pjumper WHERE id IN (?)",[deleteList],function(err,delRows){
+                if(err){
+                    console.log("Error MySql: %s",err);
+                    callback(err,[]);
+                } else {
+                    callback(null,delRows);
+                }
+            });
+        } else callback(null,[]);
+    } else callback(true,"No hay conexión a la BD");
+};
+
 
 module.exports = evento;

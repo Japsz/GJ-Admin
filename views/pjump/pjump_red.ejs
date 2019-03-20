@@ -11,12 +11,13 @@ for(var i = 0;i < data.length;i++) {
     <td><%= data[i].name%></td>
     <td><%= data[i].last_name%></td>
     <td><%= years%></td>
-    <td><a class="btn btn-info mpjump_red" data-toggle="modal" data-target="#mpjump_red"
-           data-id="<%=data[i].id%>" data-nom="<%=data[i].name%>"
-           data-ape="<%=data[i].last_name%>" data-fnac="<%= data[i].fnac_modal%>"
-        >Modificar</a></td>
     <td>
-        <input  onclick="enable2()" data-name="<%=data[i].name%>" data-last_name="<%=data[i].last_name%>" data-fnac="<%= data[i].fnac%>" name ='ids' type='checkbox' value=<%= data[i].id%>>
+        <a class="btn btn-info mpjump_red" data-toggle="modal" data-target="#mpjump_red"
+           data-id="<%=data[i].id%>" data-nom="<%=data[i].name%>"
+           data-ape="<%=data[i].last_name%>" data-fnac="<%= data[i].fnac_modal%>">Modificar</a>
+    </td>
+    <td>
+        <input  onclick="enable2()" data-name="<%=data[i].name%>" data-last_name="<%=data[i].last_name%>" data-fnac="<%= data[i].fnac_modal%>" name ='ids' type='checkbox' value=<%= data[i].id%>>
     </td>
 </tr>
 <%

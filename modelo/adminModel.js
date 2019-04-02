@@ -29,8 +29,6 @@ admin.getVisitasByEdad = function(db,desde,hasta,callback){
             if(err){
                 callback(true,err);
             } else {
-                console.log(rows);
-                console.log(err);
                 if(rows.length){
                     callback(null,rows);
                 } else callback(null, []);

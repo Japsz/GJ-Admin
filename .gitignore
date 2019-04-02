@@ -72,7 +72,7 @@ typings/
 
 # Serverless directories
 .serverless
-
+credentials\
 # FuseBox cache
 .fusebox/
 dbConfig.js

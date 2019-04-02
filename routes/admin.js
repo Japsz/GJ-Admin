@@ -52,12 +52,13 @@ router.post('/loginHandler', function(req, res) {
 });
 router.post('/getStats', function(req, res) {
     if(req.session.isAdminLogged){
-        admin.getVisitasByEdad("gojump-vina",req.body.desde,req.body.hasta,function(err,rows){
+        console.log(req.body);
+        admin.getVisitasByEdad(req.body.db,req.body.desde,req.body.hasta,function(err,rows){
             if(err){
                 console.log(rows);
                 res.send({err:true,errMsg:rows});
             } else {
-                console.log(rows);
+                console.log(rows.length);
                 if(rows){
                     res.send({err:false,rows:rows});
                 } else {

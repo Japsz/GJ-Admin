@@ -79,21 +79,14 @@
             <div class="row">
 
                 <!-- Area Chart -->
-                <div class="col-md-12 ">
+                <div class="col-md-12">
                     <div class="card shadow mb-4">
                         <!-- Card Header - Dropdown -->
                         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                             <h6 class="m-0 font-weight-bold text-primary">N° Visitas</h6>
-                            <div class="dropdown no-arrow">
-                                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                <a href="#grafModal" data-toggle="modal">
+                                    <i class="fa fa-wrench fa-sm fa-fw "></i> Opciones
                                 </a>
-                                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-                                    <div class="dropdown-header">Local:</div>
-                                    <a class="dropdown-item" href="#">Viña del Mar</a>
-                                    <a class="dropdown-item" href="#">Santiago</a>
-                                </div>
-                            </div>
                         </div>
                         <!-- Card Body -->
                         <div class="card-body">
@@ -165,12 +158,51 @@
             <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <a class="btn btn-primary" href="login.html">Logout</a>
+                <a class="btn btn-primary" href="#">Logout</a>
             </div>
         </div>
     </div>
 </div>
-
+<!-- Graf Modal-->
+<div class="modal fade" id="grafModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Opciones del gráfico</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <form id="grafForm" data-url="/admin/getStats">
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="col-md-12">
+                            <label for="dbSelector">Local:</label>
+                            <select name="db" id="dbSelector" class="form-control" required>
+                                <option value="gojump-vina">Viña del Mar</option>
+                                <option value="gojump-stgo" selected>Santiago</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row" style="margin-top: 5px">
+                        <div class="col-md-6">
+                            <label for="desde">Desde</label>
+                            <input type="date" name="desde" class="form-control">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="hasta">Hasta</label>
+                            <input type="date" name="hasta" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Actualizar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <!-- Bootstrap core JavaScript-->
 <script src="/vendor/jquery/jquery.min.js"></script>
 <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -289,12 +321,75 @@
     }];
     var labels = [];
     var grafico = lineaGraph($("#myAreaChart"),labels,dataset);
+    $("#grafForm").on('submit',function(e){
+       e.preventDefault();
+       var data = {
+           db: $("#dbSelector").val()
+       };
+        $("#grafForm input").each(function(idx){
+            data[$(this).attr('name')] = $(this).val();
+        });
+        $.ajax({
+            type: 'post',
+            url: '/admin/getStats',
+            data: data,
+            success: function(data){
+                console.log(data);
+                if(!data.err){
+                    var label = '';
+                    var idxList = [];
+                    if(data.rows.length){
+                        grafico.reset();
+                        data.rows.map(function(row){
+                            var aux = row;
+                            console.log(row);
+                            aux.ano = parseInt(new Date().getFullYear()) - parseInt(row.ano);
+                            if(label != aux.ano){
+                                label = aux.ano;
+                                idxList.unshift(aux.ano);
+                            }
+                            return aux;
+                        });
+                        grafico.data.labels = idxList;
+                        grafico.data.datasets.forEach(function (t) {
+                            for(var j = 0;j<idxList.length;j++){
+                                var auxRows = data.rows;
+                                if(auxRows.length) {
+                                    for(var i = auxRows.length - 1;i>=0;i--){
+                                        if(auxRows[i].ano <= idxList[j]){
+                                            if(auxRows[i].duration == (parseInt(t.label) + 5)){
+                                                t.data.push(auxRows[i].visitas);
+                                                data.rows.splice(i,1);
+                                                break;
+                                            }
+                                        } else {
+                                            t.data.push(0);
+                                            break;
+                                        }
+                                    }
+                                } else {
+                                    t.data.push(0);
+                                }
+                            }
+                        });
+                        grafico.update();
+
+                    } else {
+                        alert("No se encontraron resúltados");
+                    }
+                    $("#grafModal").modal('toggle');
+                } else alert(data.errMsg);
+            }
+        });
+
+    });
     $.ajax({
         type: 'post',
         url: '/admin/getStats',
         data: {
+            db: 'gojump-stgo',
             desde: '2019-01-01',
-            hasta: '2019-04-02'
+            hasta: '2019-12-31'
         },
         success: function(data){
             console.log(data);
@@ -303,7 +398,6 @@
                 var idxList = [];
                 data.rows.map(function(row){
                     var aux = row;
-                    console.log(row);
                     aux.ano = parseInt(new Date().getFullYear()) - parseInt(row.ano);
                     if(label != aux.ano){
                         label = aux.ano;

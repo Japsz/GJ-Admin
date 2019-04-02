@@ -28,10 +28,12 @@ app.use(cookieSession({
 // Controladores
 var index = require('./routes/index');
 var pjump = require('./routes/pjump');
+var admin = require('./routes/admin');
 
 // Rutas
 app.use('/', index);
 app.use('/pjump', pjump);
+app.use('/admin', admin);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
     var err = new Error('Not Found');

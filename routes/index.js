@@ -4,10 +4,7 @@ var mysql = require('mysql');
 
 /* GET mainframe. */
 router.get('/', function(req, res) {
-    res.render('index');
+    res.redirect('/admin/login');
 });
 /* GET mainframe. */
-router.get('/hola', function(req, res) {
-    res.render('jumbotronError',{errMsg:'Dante culiao'});
-});
 module.exports = router;

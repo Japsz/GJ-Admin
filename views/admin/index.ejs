@@ -340,6 +340,9 @@
                     var idxList = [];
                     if(data.rows.length){
                         grafico.reset();
+                        grafico.data.datasets.forEach(function(t){
+                            t.data = [];
+                        });
                         data.rows.map(function(row){
                             var aux = row;
                             console.log(row);

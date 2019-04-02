@@ -24,13 +24,11 @@ admin.getVisitasByEdad = function(db,desde,hasta,callback){
     if(connection){
         connection.query("SELECT  YEAR(visitas.fnac)  AS ano, COUNT(visitas.id) AS visitas,visitas.duration  " +
             "FROM (SELECT visita.*,jumper.fnac FROM `" + db +"`.visita LEFT JOIN `" + db +"`.jumper ON jumper.id = visita.idjumper GROUP BY visita.id) AS visitas " +
-            "WHERE (visitas.fnac BETWEEN '1900-11-3' AND ?) AND (visitas.date_g BETWEEN ? AND ?)  AND visitas.status = 'ended' " +
-            "GROUP BY YEAR(visitas.fnac),visitas.duration",[new Date().toLocaleDateString(),desde,hasta],function(err,rows){
+            "WHERE (visitas.fnac BETWEEN '1900-11-3' AND CURRENT_TIMESTAMP) AND (visitas.date_g BETWEEN ? AND ?)  AND visitas.status = 'ended' " +
+            "GROUP BY YEAR(visitas.fnac),visitas.duration",[desde,hasta],function(err,rows){
             if(err){
                 callback(true,err);
             } else {
-                console.log(rows);
-                console.log(err);
                 if(rows.length){
                     callback(null,rows);
                 } else callback(null, []);

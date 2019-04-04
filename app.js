@@ -36,8 +36,8 @@ app.use('/pjump', pjump);
 app.use('/admin', admin);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-    var err = new Error('Not Found');
-    err.status = 500;
+    var err = new Error('Error');
+    err.status = 400;
     next(err);
 });
 

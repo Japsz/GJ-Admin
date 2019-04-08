@@ -95,14 +95,14 @@
                             </div>
                         </div>
                         <div class="card-footer">
-                            <div class="col-md d-inline"><b>Total:</b></div>
-                            <div class="col-md d-inline"><b style="color: rgb(78, 115, 223)">30:</b></div>
-                            <div class="col-md d-inline"><b style="color: rgb(205, 63, 63)">60:</b></div>
-                            <div class="col-md d-inline"><b style="color: rgb(228, 163, 43)">90:</b></div>
-                            <div class="col-md d-inline"><b style="color: rgb(0,150,136)">120:</b></div>
-                            <div class="col-md d-inline"><b style="color: rgb(60, 240, 43)">180:</b></div>
-                            <div class="col-md d-inline"><b style="color: rgb(240,70,174)">240:</b></div>
-                            <div class="col-md d-inline"><b style="color: rgb(73,8,180)">360:</b></div>
+                            <div class="col-md d-inline"><b>Total:</b> <span id="labeltot"></span></div>
+                            <div class="col-md d-inline"><b style="color: rgb(78, 115, 223)">30:</b> <span id="label30"></span></div>
+                            <div class="col-md d-inline"><b style="color: rgb(205, 63, 63)">60:</b> <span id="label60"></span></div>
+                            <div class="col-md d-inline"><b style="color: rgb(228, 163, 43)">90:</b> <span id="label90"></span></div>
+                            <div class="col-md d-inline"><b style="color: rgb(0,150,136)">120:</b> <span id="label120"></span></div>
+                            <div class="col-md d-inline"><b style="color: rgb(60, 240, 43)">180:</b> <span id="label180"></span></div>
+                            <div class="col-md d-inline"><b style="color: rgb(240,70,174)">240:</b> <span id="label240"></span></div>
+                            <div class="col-md d-inline"><b style="color: rgb(73,8,180)">360:</b> <span id="label360"></span></div>
                         </div>
                     </div>
                 </div>
@@ -340,6 +340,8 @@
                             return aux;
                         });
                         grafico.data.labels = idxList;
+                        var total = 0;
+                        var parcial = 0;
                         grafico.data.datasets.forEach(function (t) {
                             for(var j = 0;j<idxList.length;j++){
                                 var auxRows = data.rows;
@@ -347,6 +349,8 @@
                                     for(var i = auxRows.length - 1;i>=0;i--){
                                         if(auxRows[i].ano <= idxList[j]){
                                             if(auxRows[i].duration == (parseInt(t.label) + 5)){
+                                                total += auxRows[i].visitas;
+                                                parcial += auxRows[i].visitas;
                                                 t.data.push(auxRows[i].visitas);
                                                 data.rows.splice(i,1);
                                                 break;
@@ -360,9 +364,11 @@
                                     t.data.push(0);
                                 }
                             }
+                            $("#label" + t.label).html(parcial);
+                            parcial = 0;
                         });
+                        $("#labeltot").html(total);
                         grafico.update();
-
                     } else {
                         alert("No se encontraron resúltados");
                     }
@@ -395,6 +401,8 @@
                     return aux;
                 });
                 grafico.data.labels = idxList;
+                var total = 0;
+                var parcial = 0;
                 grafico.data.datasets.forEach(function (t) {
                     for(var j = 0;j<idxList.length;j++){
                         var auxRows = data.rows;
@@ -402,6 +410,8 @@
                             for(var i = auxRows.length - 1;i>=0;i--){
                                 if(auxRows[i].ano <= idxList[j]){
                                     if(auxRows[i].duration == (parseInt(t.label) + 5)){
+                                        total += auxRows[i].visitas;
+                                        parcial += auxRows[i].visitas;
                                         t.data.push(auxRows[i].visitas);
                                         data.rows.splice(i,1);
                                         break;
@@ -415,7 +425,10 @@
                             t.data.push(0);
                         }
                     }
+                    $("#label" + t.label).html(parcial);
+                    parcial = 0;
                 });
+                $("#labeltot").html(total);
                 grafico.update();
             } else alert(data.errMsg);
         }

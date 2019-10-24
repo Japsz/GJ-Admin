@@ -10,13 +10,13 @@ var bodyParser = require('body-parser');
 var app = express();
 
 app.use(cors());
+// app.set('port',process.env.PORT || '3000');
+// uncomment after placing your favicon in /public
 // view engine setup
+//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-// app.set('port',process.env.PORT || '3000');
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -28,12 +28,10 @@ app.use(cookieSession({
 // Controladores
 var index = require('./routes/index');
 var pjump = require('./routes/pjump');
-var admin = require('./routes/admin');
 
 // Rutas
 app.use('/', index);
 app.use('/pjump', pjump);
-app.use('/admin', admin);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
     var err = new Error('Error');

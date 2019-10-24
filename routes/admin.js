@@ -52,7 +52,6 @@ router.post('/loginHandler', function(req, res) {
 });
 router.post('/getStats', function(req, res) {
     if(req.session.isAdminLogged){
-        console.log(req.body);
         admin.getVisitasByEdad(req.body.db,req.body.desde,req.body.hasta,function(err,rows){
             if(err){
                 console.log(rows);
